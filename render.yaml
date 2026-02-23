@@ -1,10 +1,19 @@
 services:
   - type: web
     name: healthkee-backend
-    env: node
-    plan: free  # or starter, etc.
-    branch: main
+    runtime: node              # ← Critical: use runtime, NOT env
+    plan: free                 # or 'starter' if you upgrade later
+    branch: main               # optional if default branch is main
     buildCommand: npm install
-    startCommand: node server.js   # adjust if needed, e.g. node backend/server.js
-    autoDeploy: true
-    # Add env vars, health checks, etc. as needed
+    startCommand: node server.js  # ← Confirm this matches your actual entry point!
+    # autoDeploy: true        # deprecated → use autoDeployTrigger below if needed
+    autoDeployTrigger: commit  # default is 'commit' anyway (deploys on push)
+    # Optional but recommended additions:
+    # healthCheckPath: /health   # or / or whatever your app has
+    # numInstances: 1
+    # region: oregon             # default; change if needed (e.g. singapore for lower latency to India)
+    # envVars:                   # add these once the service exists
+    #   - key: NODE_ENV
+    #     value: production
+    #   - key: PORT              # Render sets this automatically, but good to know
+    #     value: "10000"         # Render expects app to listen on $PORT
