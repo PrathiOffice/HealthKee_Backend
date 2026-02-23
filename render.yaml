@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: healthkee-backend
+    env: node
+    plan: free  # or starter, etc.
+    branch: main
+    buildCommand: npm install
+    startCommand: node server.js   # adjust if needed, e.g. node backend/server.js
+    autoDeploy: true
+    # Add env vars, health checks, etc. as needed
