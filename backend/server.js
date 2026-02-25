@@ -3,6 +3,9 @@ const nodemailer = require('nodemailer');
 const cors = require('cors');
 require('dotenv').config();
 
+// Force IPv4 for Nodemailer to fix "ENETUNREACH" IPv6 errors on Render/Node 18+
+require('dns').setDefaultResultOrder('ipv4first');
+
 const app = express();
 app.use(cors());
 app.use(express.json());
