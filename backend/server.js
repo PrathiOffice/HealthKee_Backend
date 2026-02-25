@@ -16,12 +16,15 @@ const otpStore = new Map();
 // Configure the email transporter using Nodemailer
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // Use SSL
+    port: 587,
+    secure: false, // Use STARTTLS
     auth: {
         user: process.env.EMAIL_USER, // Your Gmail address
         pass: process.env.EMAIL_PASS, // Your Gmail App Password
     },
+    connectionTimeout: 10000, // 10 seconds
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
 });
 
 app.post('/api/send-otp', async (req, res) => {
@@ -64,6 +67,12 @@ app.post('/api/send-otp', async (req, res) => {
         res.status(200).json({ message: 'OTP sent successfully' });
     } catch (error) {
         console.error('Error sending email:', error);
+        console.error('Detailed Email Error:', {
+            message: error.message,
+            code: error.code,
+            command: error.command,
+            response: error.response
+        });
         res.status(500).json({ error: `Failed to send email: ${error.message}` });
     }
 });
