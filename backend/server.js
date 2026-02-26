@@ -45,13 +45,16 @@ app.post('/api/send-otp', async (req, res) => {
         });
 
         const data = await response.json();
-        if (!response.ok) throw new Error(data.message || 'Brevo API Error');
+        if (!response.ok) {
+            console.error('Brevo API Error Details:', data);
+            throw new Error(`Brevo Error: ${data.message || response.statusText}`);
+        }
 
         console.log(`OTP sent to ${email} via Brevo`);
         res.status(200).json({ message: 'OTP sent successfully' });
     } catch (error) {
-        console.error('Brevo Error:', error);
-        res.status(500).json({ error: 'Failed to send OTP' });
+        console.error('Final Error Catch:', error.message);
+        res.status(500).json({ error: error.message || 'Failed to send OTP' });
     }
 });
 
