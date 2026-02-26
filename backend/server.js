@@ -8,9 +8,7 @@ app.use(express.json());
 
 const otpStore = new Map();
 
-// --- BREVO (SENDINBLUE) CONFIGURATION ---
-// Get this from: Brevo Dashboard -> SMTP & API -> API Keys
-const BREVO_API_KEY = process.env.BREVO_API_KEY || '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';
+const BREVO_API_KEY = process.env.BREVO_API_KEY;
 const SENDER_EMAIL = process.env.SENDER_EMAIL || 'prathiyuman4452@gmail.com';
 
 app.post('/api/send-otp', async (req, res) => {
